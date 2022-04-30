@@ -1,0 +1,25 @@
+{
+  "name": "weather",
+  "version": "1.0.0",
+  "description": "Weather information",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Amir Korkinejad || William Rookwood",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "mysql-redis": "^0.7.2",
+    "mysql2": "^2.3.3",
+    "node-fetch": "^2.6.6",
+    "nodemon": "^2.0.15",
+    "redis": "^4.0.6",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui-express": "^4.3.0"
+  }
+}

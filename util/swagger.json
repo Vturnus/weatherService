@@ -1,0 +1,127 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Weather API",
+        "version": "1.0.0",
+        "description": "This is a Node.js Api project to check climate of a city",
+        "contact": {
+            "name": "Amir Korkinejad || William Rookwood",
+            "email": "amir.korkinejad@gmail.com",
+            "url": "linkedIn: -> www.linkedin.com/in/amirKorkinejad"
+        }
+    },
+    "servers": [{
+        "url": "http://localhost:3000/api/weather",
+        "description": "Local server"
+    }],
+
+    "paths": {
+       "/": {
+           "post": {
+               "tags": ["Weather"],
+               "description": "It searches the cache and if it didnt find a result then it will search the database and if no data found in db either it will call the weather provider api",
+               "summary": "Gets the climate information of the desired city",
+               "servers": [
+                   {
+                   "url": "http://api.openweathermap.org/geo/1.0/direct?q=${this.cityName},${this.countryCode}&limit=5&appid=${this.apiKey}",
+                   "description": "The weather provider which get city name as parameter and response with lat and lon"
+                    },
+                   {
+                       "url": "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.apiKey}",
+                       "description": "After we get the lat and lon from geo, then we get the climate status from this server"
+                   }
+               ],
+               "requestBody": {
+                   "description": "Name of a city to search",
+                   "required": true,
+                   "content": {
+                       "application/x-www-form-urlencoded": {
+                           "schema": {
+                               "$ref": "#/components/schemas/cityName"
+                           }
+                       }
+                   }
+               },
+               "responses": {
+                    "200": {
+                        "description": "Result",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response"
+                                }
+                            }
+                        }
+                    },
+                   "default": {
+                       "description": "Error payload",
+                       "content": {
+                           "application/json": {
+                               "schema": {
+                                   "$ref": "#/components/schemas/Error"
+                               }
+                           }
+                       }
+                   }
+               }
+           }
+       }
+    },
+    "components": {
+        "schemas": {
+            "cityName": {
+                "type": "string",
+                "description": "Name of the city",
+                "example": "cityName: Tehran"
+            },
+            "Error": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "number",
+                        "description": "Status code",
+                        "example": 400
+                    },
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Reason of error",
+                        "example": "Please provide the city name"
+                    }
+                }
+            },
+            "Response": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "City's ID",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "City's name",
+                        "example": "Tehran"
+                    },
+                    "temperature": {
+                        "type": "number",
+                        "description": "City's temperature in celsius",
+                        "example": 18
+                    },
+                    "weather": {
+                        "type": "string",
+                        "description": "City's weather condition",
+                        "example": "Cloudy"
+                    },
+                    "country": {
+                        "type": "string",
+                        "description": "Country which the city is located in",
+                        "example": "IR (ISO 3166 country codes)"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+const fetch = require('node-fetch')
+
+module.exports = class WeatherCall {
+    constructor(cityName, countryCode, apiKey = process.env.API) {
+        this.cityName = cityName
+        this.countryCode = countryCode
+        this.apiKey = apiKey
+
+    }
+    async getCoordinates() {
+        let url = `http://api.openweathermap.org/geo/1.0/direct?q=${this.cityName},${this.countryCode}&limit=5&appid=${this.apiKey}`
+        let res = await fetch(url)
+        return res.json()
+    }
+    async getWeather(lat, lon) {
+         let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.apiKey}`
+        const res = await fetch(url)
+        return res.json()
+    }
+}
